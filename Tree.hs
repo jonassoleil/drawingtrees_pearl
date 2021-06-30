@@ -48,21 +48,18 @@ mean x y = (x+y)/2.0
 -- comment on this
 fitlistr = reverse . map (\x -> - x). fitlistl . map flipextent . reverse
 
--- read zipWith.
 fitlist es = zipWith mean (fitlistl es) (fitlistr es)
-
-
-design' :: Tree Char -> (Tree(Char, Float), Extent)
-design' tree = case tree of
-  Nil -> (Nil, [(0.0, 0.0)])
-  Node label subtrees -> 
-    let (trees, extents) = unzip (map design' subtrees) in
-    let positions = fitlist extents in
-    let ptrees = zipWith movetree trees positions in
-    let pextents = zipWith moveextent extents positions in
-    let resultextent = (0.0, 0.0) : mergelist pextents in
-    let resulttree = Node (label, 0.0) ptrees
-    in (resulttree, resultextent)
 
 design :: Tree Char -> Tree (Char, Float)
 design tree = fst (design' tree)
+  where 
+    design' tree = case tree of
+      Nil -> (Nil, [(0.0, 0.0)])
+      Node label subtrees -> 
+        let (trees, extents) = unzip (map design' subtrees) in
+        let positions = fitlist extents in
+        let ptrees = zipWith movetree trees positions in
+        let pextents = zipWith moveextent extents positions in
+        let resultextent = (0.0, 0.0) : mergelist pextents in
+        let resulttree = Node (label, 0.0) ptrees
+        in (resulttree, resultextent)
