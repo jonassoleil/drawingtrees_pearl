@@ -1,4 +1,4 @@
-module Tree where
+module PositionTree where
 
 import Data.List (foldl')
 
@@ -45,7 +45,6 @@ flipextent:: Extent -> Extent
 flipextent = map (\(l,r) -> (-r, -l)) 
 mean x y = (x+y)/2.0
 
--- comment on this
 fitlistr = reverse . map (\x -> - x). fitlistl . map flipextent . reverse
 
 fitlist es = zipWith mean (fitlistl es) (fitlistr es)
